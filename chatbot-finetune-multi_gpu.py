@@ -140,8 +140,9 @@ end_time = datetime.now()
 print('waist time',end_time - start_time)
 if rank == 0:
     torch.save(model, 'new/pytorch_model.bin')
-
+    
 dist.destroy_process_group()
+torch.cuda.empty_cache()
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 class GPTBot:
@@ -179,8 +180,8 @@ class GPTBot:
         response = []
 
         for _ in range(self.max_len):
-            outputs = self.model(input_ids=input_ids.to(device)).cpu()
-            logits = outputs.logits
+            outputs = self.model(input_ids=input_ids.to(device))
+            logits = outputs.logits.cpu()
             next_token_logits = logits[0, -1, :]
             next_token_logits[self.tokenizer.convert_tokens_to_ids('[UNK]')] = -float('Inf')
             next_token = torch.multinomial(F.softmax(next_token_logits, dim=-1), num_samples=1)
