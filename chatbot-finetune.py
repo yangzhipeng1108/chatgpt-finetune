@@ -149,7 +149,7 @@ class GPTBot:
 
 
 bot = GPTBot("shibing624/gpt2-dialogbot-base-chinese")
-print(bot.predict("最近天气好好，想出去拍照片"))
+print(bot.predict("想去哪里玩"))
 
 bot = GPTBot("new/pytorch_model.bin")
-print(bot.predict("最近天气好好，想出去拍照片"))
+print(bot.predict("想去哪里玩"))
